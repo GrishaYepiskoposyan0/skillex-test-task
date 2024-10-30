@@ -1,8 +1,9 @@
-import { mysqlConnection } from "../../common/db/mysql/connection.mjs";
 import * as combinationUtils from "../../common/utils/combination.utils.mjs";
 import { StatusCodes } from "http-status-codes";
+import { mysqlConnectionPool } from "../../common/db/mysql/connection.mjs";
 
 export const generateCombination = async (generateCombinationDto) => {
+  const mysqlConnection = await mysqlConnectionPool.getConnection();
   try {
     const uppercaseStartingCharCode = 65;
     await mysqlConnection.beginTransaction();
