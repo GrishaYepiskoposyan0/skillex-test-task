@@ -8,6 +8,7 @@ export const generateCombination = async (req, res) => {
     );
     res.status(code).json(result);
   } catch (error) {
+    console.log(error);
     return res.status(StatusCodes.BAD_REQUEST).json({
       success: false,
       message: "Something went wrong!",

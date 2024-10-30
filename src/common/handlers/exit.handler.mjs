@@ -1,10 +1,10 @@
-import { mysqlConnection } from "../db/mysql/connection.mjs";
+import { mysqlConnectionPool } from "../db/mysql/connection.mjs";
 
 export const handleProcessExit = () => {
   const events = ["exit", "SIGINT", "SIGUSR1", "SIGUSR2"];
   events.forEach((event) => {
     process.on(event, () => {
-      mysqlConnection
+      mysqlConnectionPool
         .end()
         .then(() => {
           console.log("The database connection was closed!");
