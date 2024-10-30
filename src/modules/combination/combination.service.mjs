@@ -5,25 +5,15 @@ import { mysqlConnectionPool } from "../../common/db/mysql/connection.mjs";
 export const generateCombination = async (generateCombinationDto) => {
   const mysqlConnection = await mysqlConnectionPool.getConnection();
   try {
-    const uppercaseStartingCharCode = 65;
     await mysqlConnection.beginTransaction();
 
-    const combinations = generateCombinationDto.items.reduce(
-      (acc, cur, index) => {
-        for (let i = 1; i <= cur; i++) {
-          acc.push(String.fromCharCode(uppercaseStartingCharCode + index) + i);
-        }
-        return acc;
-      },
-      [],
-    );
     const validCombinations = combinationUtils.generateCombinations(
-      combinations,
+      generateCombinationDto.items,
       generateCombinationDto.length,
     );
     const [insertItemResult] = await mysqlConnection.query(
       "INSERT INTO items (item_name) VALUES (?)",
-      [JSON.stringify(combinations)],
+      [JSON.stringify(generateCombinationDto.items)],
     );
     const itemId = insertItemResult.insertId;
 
